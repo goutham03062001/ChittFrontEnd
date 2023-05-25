@@ -1,0 +1,7 @@
+[
+    {"month":"1","Amount":"5000","Mode":"Phone Pay","Date":"05-02-2023"},
+    {"month":"2","Amount":"5000","Mode":"Google Pay","Date":"05-02-2023"},
+    {"month":"3","Amount":"5000","Mode":"Google Pay","Date":"05-02-2023"},
+    {"month":"4","Amount":"5000","Mode":"Paytm","Date":"05-02-2023"},
+    {"month":"5","Amount":"5000","Mode":"Paytm","Date":"05-02-2023"}
+]
