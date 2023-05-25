@@ -6,6 +6,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import axios from "axios";
 import ChitsUI from './ChitsUI';
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import { BASE_URL } from './Helper';
 const DisplayChittiUsers = () => {
     
     //allUsersData
@@ -19,9 +20,11 @@ const DisplayChittiUsers = () => {
     useEffect(()=>{
         
         function loadUsers(){
-            const response = axios.get("http://localhost:5000/users/getAllUsers").then((data)=>{
+            const response = axios.get(BASE_URL+"/users/getAllUsers").then((data)=>{
                 console.log(data);
                 setUsers(data.data);
+                console.log(response);
+
             }).catch((err)=>{console.log(err)});
         }
         loadUsers();
@@ -55,8 +58,10 @@ const DisplayChittiUsers = () => {
                 "Content-Type":"application/json"
             }
         };
-        const response = axios.post("http://localhost:5000/users/addNew",body,config).then((data)=>{
+        const response = axios.post(BASE_URL+"/users/addNew",body,config).then((data)=>{
             console.log(data);
+            console.log(response);
+
             setSuccessMessage(data.data.message);
             setLoading(false);
         }).catch((err)=>{console.log(err)});
@@ -66,9 +71,11 @@ const DisplayChittiUsers = () => {
     function ViewSingleUserDetails(user){
         setUserId(user._id);
         let id = user._id;
-        const response = axios.get("http://localhost:5000/users/getUser/"+id).then((data)=>{
+        const response = axios.get(BASE_URL+"/users/getUser/"+id).then((data)=>{
             console.log('User details with id : '+id);
             console.log(data);
+            console.log(response);
+
             setCurrentUser(data.data);
         }).catch((err)=>{console.log(err)})
     }

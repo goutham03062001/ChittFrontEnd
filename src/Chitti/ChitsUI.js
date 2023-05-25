@@ -3,6 +3,7 @@ import React,{useState} from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { TextField,Button } from '@mui/material';
 import "./ChitsUI.css";
+import { BASE_URL } from './Helper';
 import axios from 'axios';
 
 //ToDo
@@ -27,11 +28,11 @@ const ChitsUI = ({index, userId,currentUser}) => {
     const[Status,setStatus] = useState("");
     const[Mode,setMode] = useState("");
     const[Date,setDate] = useState("");
-    const[month,setMonth] = useState(index);
+    const month = index;
 
     // currentUser.otherDetails.filter()
 
-    const[currentUserStatus,SetCurrentUserStatus] = useState("");
+    // const[currentUserStatus,SetCurrentUserStatus] = useState("");
     const editChitDetails = ()=>{
         setIsEditing(true);
     }
@@ -66,10 +67,11 @@ const ChitsUI = ({index, userId,currentUser}) => {
                 }
             }
             //backend 
-            const response = axios.put("http://localhost:5000/users/update/"+userId,body,config)
+            const response = axios.put(BASE_URL+"/users/update/"+userId,body,config)
             .then((data)=>{
                 console.log('After Updating');
                 console.log(data);
+                console.log(response);
             }).catch((err)=>{console.log(err.message)});
             
     }
