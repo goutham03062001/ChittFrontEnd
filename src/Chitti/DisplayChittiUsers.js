@@ -120,7 +120,6 @@ const DisplayChittiUsers = () => {
   // const deleteUserById = (user) => {
   //   console.log("User Name : " + user);
   // };
-  const[deleteMessage,setDeleteMessage] = useState(null);
   const[isDltBtnClicked,setIsDltBtnClicked] = useState(false);
 const deleteUserById = (user)=>{  
 
@@ -129,7 +128,6 @@ const deleteUserById = (user)=>{
   const response = axios.delete(BASE_URL+`/users/delete/${user._id}`).then((data)=>{
     console.log(data);
     console.log(response);
-    setDeleteMessage(data.message);
     console.log(data);
     toast.success("User removed, please refresh the page!!");
   }).catch((error)=>{console.log(error.message)})
