@@ -33,6 +33,7 @@ const DisplayChittiUsers = () => {
   //userAddedMessage
   const [successMessae, setSuccessMessage] = useState(null);
   useEffect(() => {
+    
     function loadUsers() {
       const response =  axios
         .get(BASE_URL + "/users/getAllUsers")
@@ -40,6 +41,7 @@ const DisplayChittiUsers = () => {
           console.log(data);
           setUsers(data.data);
           console.log(response);
+
         })
         .catch((err) => {
           console.log(err);
@@ -84,6 +86,9 @@ const DisplayChittiUsers = () => {
 
         setSuccessMessage(data.data.message);
         setLoading(false);
+        // setTimeout(()=>{
+        //   window.location.reload();
+        // },2000)
       })
       .catch((err) => {
         console.log(err);
@@ -129,7 +134,11 @@ const deleteUserById = (user)=>{
     console.log(data);
     console.log(response);
     console.log(data);
-    toast.success("User removed, please refresh the page!!");
+    toast.success("User removed, Page will refresh in 2 seconds!!");
+    setTimeout(()=>{
+          window.location.reload();
+        },1000)
+    window.location.reload();
   }).catch((error)=>{console.log(error.message)})
 
 }
