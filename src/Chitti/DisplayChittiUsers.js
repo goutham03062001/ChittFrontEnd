@@ -23,6 +23,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import {ToastContainer,toast} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
 import {Empty} from "antd";
+// import twilio from "twilio";
 const DisplayChittiUsers = () => {
   //allUsersData
   const [users, setUsers] = useState(null);
@@ -135,6 +136,8 @@ const deleteUserById = (user)=>{
     console.log(response);
     console.log(data);
     toast.success("User removed, Page will refresh in 2 seconds!!");
+    // const client = twilio(ACCOUNT_SID,AUTH_TOKEN);
+   
     setTimeout(()=>{
           window.location.reload();
         },1000)

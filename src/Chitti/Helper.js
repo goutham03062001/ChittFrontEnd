@@ -1,2 +1,5 @@
-export const BASE_URL = "https://chittwebsite.onrender.com"
-// export const BASE_URL = "http://localhost:5000"
+// export const BASE_URL = "https://chittwebsite.onrender.com"
+export const BASE_URL = "http://localhost:5000"
+export const ACCOUNT_SID = "ACc8d2d582ee917b2c5c1c404e2f58c40e"
+export const AUTH_TOKEN = "142bd1eb26e7d9d88c8f9bf52b323a94"
+export const VIRTUAL_NUMBER = "+13157121935"
