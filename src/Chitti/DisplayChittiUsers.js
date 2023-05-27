@@ -159,7 +159,7 @@ const deleteUserById = (user)=>{
       </div>
       <div className="row">
       {isDltBtnClicked ?<><ToastContainer position="top-center" className="mt-5"/></>:<></>}
-        {users && users.length>1 ? <>
+        {users && users.length>=1 ? <>
           {users !== null &&
           users.map((user) => (
             <div className="card user-card col-lg-4 col-12 col-sm-12 my-3">
