@@ -1,8 +1,44 @@
 .chitsUICard{
     position: relative;
 }
-.moreIcon{
+
+.user-card{
+    position:relative;
+}
+.user-more-icon{
     position: absolute;
-    top:1%;
-    right:0%;
+    top:0%;
+    right:2%;
+}
+.user-more-icon:hover{
+    cursor: pointer;
+} 
+.menuItem{
+    position: relative;
+}
+.moreVertIcon{
+    position: relative;
+    right:2%;
+}
+/* tr{margin-top:100px} */
+.menuActionCard{
+    width:180px;
+    height:130px;
+    text-align: center;
+    z-index:1;
+    box-shadow: 2px 2px 5px black;
+    padding:5px;
+    /* position: fixed; */
+    right:5%;
+}
+
+.empty{
+    width:100vw;
+    height:100vh;
+    display: flex;
+    flex-direction: column;
+    gap:100px;
+    justify-content: center;
+    align-items: center;
+    /* font-size: 100px; */
 }
