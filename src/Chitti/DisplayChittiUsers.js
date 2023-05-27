@@ -5,9 +5,8 @@ import {
   TextField,
   Typography,
   Alert,
-  Menu,
   IconButton,
-  MenuItem,
+  
 } from "@mui/material";
 import "./ViewSingleUserDetails.css";
 import AddIcon from "@mui/icons-material/Add";
@@ -20,9 +19,7 @@ import { BASE_URL } from "./Helper";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
-import SecurityUpdateGoodIcon from "@mui/icons-material/SecurityUpdateGood";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import CloseIcon from '@mui/icons-material/Close';
 import {ToastContainer,toast} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
 import {Empty} from "antd";
