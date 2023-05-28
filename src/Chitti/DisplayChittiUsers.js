@@ -5,7 +5,7 @@ import {
   TextField,
   Typography,
   Alert,
-  IconButton,
+  IconButton
   
 } from "@mui/material";
 import "./ViewSingleUserDetails.css";
