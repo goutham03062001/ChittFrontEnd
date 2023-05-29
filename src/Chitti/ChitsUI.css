@@ -1,11 +1,15 @@
 .chitsUICard{
     position: relative;
 }
-
 .user-card{
     position:relative;
 }
 .user-more-icon{
+    position: absolute;
+    top:0%;
+    right:2%;
+}
+.moreIcon{
     position: absolute;
     top:0%;
     right:2%;
@@ -31,7 +35,6 @@
     /* position: fixed; */
     right:5%;
 }
-
 .empty{
     width:100vw;
     height:100vh;
