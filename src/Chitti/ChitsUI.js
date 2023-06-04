@@ -8,6 +8,8 @@ import axios from "axios";
 import {ToastContainer,toast} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import Skeleton from '@mui/material/Skeleton';
+import CancelIcon from "@mui/icons-material/Cancel";
 
 //ToDo
 /*
@@ -17,7 +19,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
     4. loop through otherDetails array until we find index === month
     5. print those properties here
 */
-const ChitsUI = ({ index, userId, currentUser }) => {
+const ChitsUI = ({ index, userId, currentUser , closeDetails, openModal}) => {
   // console.log("otherDetails"+otherDetails);
   for (let i = 0; i < index; i++) {
     if (currentUser.otherDetails[i] !== undefined) {
@@ -30,8 +32,11 @@ const ChitsUI = ({ index, userId, currentUser }) => {
   const [Status, setStatus] = useState("");
   const [Mode, setMode] = useState("");
   const [Date, setDate] = useState("");
+
+  //loader
+  const[isCurrentMonthLoaded,setIsCurrentMonthLoaded] = useState(false);
   const month = index;
-  
+ 
   const editChitDetails = () => {
     setIsEditing(true);
     const response = axios
@@ -51,6 +56,8 @@ const ChitsUI = ({ index, userId, currentUser }) => {
         setStatus(data.data.Status);
         setDate(data.data.Date);
         setMode(data.data.Mode);
+
+        setIsCurrentMonthLoaded(true);
       })
       .catch((error) => {
         console.log(error.message);
@@ -127,8 +134,9 @@ const ChitsUI = ({ index, userId, currentUser }) => {
             {isUpdated&&!isUpdateBtnClicked ? <ToastContainer autoClose={2000}/>:<></>}
               <TextField
                 label={Status!==""||Status!==null || Status!==undefined?<>Status</>:<>Status</>}
-                value={Status}
-                onChange={(e) => {
+                value={ Status}
+
+              onChange={(e) => {
                   setStatus(e.target.value);
                 }}
                 
@@ -137,7 +145,7 @@ const ChitsUI = ({ index, userId, currentUser }) => {
               <br />
               <TextField
                 label="Payment Mode"
-                value={Mode}
+                value={ Mode}
                 onChange={(e) => {
                   setMode(e.target.value);
                 }}
@@ -147,7 +155,7 @@ const ChitsUI = ({ index, userId, currentUser }) => {
               <TextField
                 label="Date"
                 type="Date"
-                value={Date}
+                value={ Date}
                 onChange={(e) => {
                   setDate(e.target.value);
                 }}
@@ -191,11 +199,12 @@ const ChitsUI = ({ index, userId, currentUser }) => {
         )}
       </div>
       <div className="moreIcon">
-        <MoreVertIcon
+        {isEditing && (<CancelIcon onClick={()=>{closeDetails(()=>{return true})}}/>)}
+        {!isEditing && (<MoreVertIcon
           onClick={(e) => {
             editChitDetails();
           }}
-        />
+        />)}
       </div>
     </div>
   );

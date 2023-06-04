@@ -5,8 +5,7 @@ import {
   TextField,
   Typography,
   Alert,
-  IconButton
-  
+  IconButton,
 } from "@mui/material";
 import "./ViewSingleUserDetails.css";
 import AddIcon from "@mui/icons-material/Add";
@@ -20,29 +19,35 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import {ToastContainer,toast} from "react-toastify"
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {Empty} from "antd";
+import { Empty } from "antd";
+
+import Skeleton from '@mui/material/Skeleton';
+
+import CircularProgress from "@mui/material/CircularProgress";
+// or
+// or
 // import twilio from "twilio";
 const DisplayChittiUsers = () => {
   //allUsersData
   const [users, setUsers] = useState(null);
   const [userId, setUserId] = useState(null);
-
+  const [usersLoaded, setUsersLoaded] = useState(false);
   //singleUserData
   const [currentUser, setCurrentUser] = useState(null);
   //userAddedMessage
   const [successMessae, setSuccessMessage] = useState(null);
   useEffect(() => {
-    
     function loadUsers() {
-      const response =  axios
+      // setUsersLoaded()
+      const response = axios
         .get(BASE_URL + "/users/getAllUsers")
         .then((data) => {
           console.log(data);
           setUsers(data.data);
           console.log(response);
-
+          setUsersLoaded(true);
         })
         .catch((err) => {
           console.log(err);
@@ -115,38 +120,40 @@ const DisplayChittiUsers = () => {
   }
 
   //show user actions
-  const[showMenuActions,setShowMenuActions] = useState(false);
-  const[menuUserId,setMenuUserId] = useState(null);
-  function handleMenuActions(user){
+  const [showMenuActions, setShowMenuActions] = useState(false);
+  const [menuUserId, setMenuUserId] = useState(null);
+  function handleMenuActions(user) {
     setShowMenuActions(!showMenuActions);
-    setMenuUserId(user._id)
+    setMenuUserId(user._id);
   }
-  
 
   // const deleteUserById = (user) => {
   //   console.log("User Name : " + user);
   // };
-  const[isDltBtnClicked,setIsDltBtnClicked] = useState(false);
-const deleteUserById = (user)=>{  
+  const [isDltBtnClicked, setIsDltBtnClicked] = useState(false);
+  const deleteUserById = (user) => {
+    setIsDltBtnClicked(true);
+    console.log("Name : " + user.userName);
+    const response = axios
+      .delete(BASE_URL + `/users/delete/${user._id}`)
+      .then((data) => {
+        console.log(data);
+        console.log(response);
+        console.log(data);
+        toast.success("User removed, Page will refresh in 2 seconds!!");
+        // const client = twilio(ACCOUNT_SID,AUTH_TOKEN);
 
-  setIsDltBtnClicked(true);
-  console.log('Name : '+user.userName);
-  const response = axios.delete(BASE_URL+`/users/delete/${user._id}`).then((data)=>{
-    console.log(data);
-    console.log(response);
-    console.log(data);
-    toast.success("User removed, Page will refresh in 2 seconds!!");
-    // const client = twilio(ACCOUNT_SID,AUTH_TOKEN);
-   
-    setTimeout(()=>{
+        setTimeout(() => {
           window.location.reload();
-        },1000)
-    window.location.reload();
-  }).catch((error)=>{console.log(error.message)})
-
-}
+        }, 1000);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
   const chitsArray = Array.from({ length: 20 }, (_, index) => (
-    <ChitsUI index={index + 1} userId={userId} currentUser={currentUser} />
+    <ChitsUI index={index + 1} userId={userId} currentUser={currentUser} closeDetails = {(e)=>handleOpenModal()}/>
   ));
   return (
     <div className="container">
@@ -158,7 +165,8 @@ const deleteUserById = (user)=>{
           alignItems: "center",
         }}
       >
-        <h3>Chitti Users</h3>
+        {usersLoaded && <h4>Chitti Users</h4>}
+
         <Button
           variant="contained"
           color="success"
@@ -169,85 +177,101 @@ const deleteUserById = (user)=>{
           Add New User <AddIcon />
         </Button>
       </div>
-      <div className="row">
-      {isDltBtnClicked ?<><ToastContainer position="top-center" className="mt-5"/></>:<></>}
-        {users && users.length>=1 ? <>
-          {users !== null &&
-          users.map((user) => (
-            <div className="card user-card col-lg-4 col-12 col-sm-12 my-3">
-              <div className="card-body">
-                <p>Name : {user.userName}</p>
-                <p>Mobile : {user.userMobile}</p>
-                <div className="user-more-icon">
-                  
-                 <MoreVertIcon 
-                 onClick={()=>{handleMenuActions(user)}}
-                  className="moreVertIcon"
-                 />
+{usersLoaded ? <>
+  <div className="row">
+        {isDltBtnClicked ? (
+          <>
+            <ToastContainer position="top-center" className="mt-5" />
+          </>
+        ) : (
+          <></>
+        )}
+        {users && users.length >= 1 ? (
+          <>
+            {users !== null &&
+              users.map((user) => (
+                <div className="card user-card col-lg-4 col-11  col-sm-12 my-3">
+                  <div className="card-body">
+                    <p>Name : {user.userName}</p>
+                    <p>Mobile : {user.userMobile}</p>
+                    <div className="user-more-icon">
+                      <MoreVertIcon
+                        onClick={() => {
+                          handleMenuActions(user);
+                        }}
+                        className="moreVertIcon"
+                      />
 
-                  {(showMenuActions) &&(user._id === menuUserId)&&(<>
-                    <div className="card menuActionCard">
-                      {/* <CloseIcon/> */}
-                      {/* <p>Update Details <ModeEditOutlineIcon/></p>
+                      {showMenuActions && user._id === menuUserId && (
+                        <>
+                          <div className="card menuActionCard">
+                            {/* <CloseIcon/> */}
+                            {/* <p>Update Details <ModeEditOutlineIcon/></p>
                      <p>Remove Details <DeleteOutlineIcon/></p>
                      <p>Modify <AutoFixHighIcon/></p> */}
-                     <table>
-                      <tr>
-                        <td>Update Details </td>
-                        
-                        <td>
-                          <IconButton>
-                        <ModeEditOutlineIcon/> </IconButton></td>
-                      </tr>
+                            <table>
+                              <tr>
+                                <td>Update Details </td>
 
-                      <tr>
-                        <td>Remove Details </td>
-                        <td>
-                          <IconButton>
-                          <DeleteOutlineIcon onClick={()=>{deleteUserById(user)}}/>
-                          </IconButton>
-                        </td>
-                      </tr>
+                                <td>
+                                  <IconButton>
+                                    <ModeEditOutlineIcon />{" "}
+                                  </IconButton>
+                                </td>
+                              </tr>
 
-                      <tr>
-                        <td>Update Details </td>
-                        <td>
-                        <IconButton>
-                        <AutoFixHighIcon/>
+                              <tr>
+                                <td>Remove Details </td>
+                                <td>
+                                  <IconButton>
+                                    <DeleteOutlineIcon
+                                      onClick={() => {
+                                        deleteUserById(user);
+                                      }}
+                                    />
+                                  </IconButton>
+                                </td>
+                              </tr>
 
-
-                        </IconButton>
-                        </td>
-                      </tr>
-                     </table>
+                              
+                            </table>
+                          </div>
+                        </>
+                      )}
                     </div>
-                  </>)}      
-                    
+
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        setUserName(user.userName);
+
+                        ViewSingleUserDetails(user);
+                        handleOpenModal(true);
+                      }}
+                    >
+                      View User {user.userName}
+                    </Button>
+                  </div>
                 </div>
-
+              ))}
+          </>
+        ) : (
+          <>
+            <div className="empty">
+              <h3 className="text text-center">No Users Found</h3>
+              <p>Create Users to see them here.</p>
+              <Empty description={false} />
               
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    setUserName(user.userName);
-
-                    ViewSingleUserDetails(user);
-                    handleOpenModal(true);
-                  }}
-                >
-                  View User {user.userName}
-                </Button>
-              </div>
             </div>
-          ))}
-        </>:<>
-          <div className="empty">
-          <h3 className="text text-center">No Users Found</h3>
-          <p>Create Users to see them here.</p>
-          <Empty description= {false}/>
-          </div>
-        </>}
+          </>
+        )}
       </div>
+</> : <>
+  <h3 className="text text-center">
+    <Skeleton/>
+    <CircularProgress color="primary" size="40"/>
+  </h3>
+</>}
       {openModal && currentUser ? (
         <>
           <Modal open={openModal} className="userDetails">
