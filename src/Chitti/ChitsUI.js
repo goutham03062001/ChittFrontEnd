@@ -33,7 +33,6 @@ const ChitsUI = ({ index, userId, currentUser , closeDetails, openModal}) => {
   const [Date, setDate] = useState("");
 
   //loader
-  const[isCurrentMonthLoaded,setIsCurrentMonthLoaded] = useState(false);
   const month = index;
  
   const editChitDetails = () => {
@@ -56,7 +55,6 @@ const ChitsUI = ({ index, userId, currentUser , closeDetails, openModal}) => {
         setDate(data.data.Date);
         setMode(data.data.Mode);
 
-        setIsCurrentMonthLoaded(true);
       })
       .catch((error) => {
         console.log(error.message);
