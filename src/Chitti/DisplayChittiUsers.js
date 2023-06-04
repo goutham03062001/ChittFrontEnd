@@ -17,7 +17,6 @@ import "./ChitsUI.css";
 import { BASE_URL } from "./Helper";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
-import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
