@@ -12,11 +12,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Box } from '@mui/material';
 
 const ViewAnalyticsByMonth = () => {
-    const {month} = useParams();
     const[state,setState] = useState([]);
     const[loaded,setLoaded] = useState(false);
-    useEffect(()=>{
+    const {month} = useParams();
+    useEffect((month)=>{
     const loadData = async()=>{
+
         const res = await axios.get(BASE_URL+"/users/analytics/month/"+month+"/viewMore").then((data)=>{
             setState(data.data);
             setLoaded(true);
@@ -25,7 +26,7 @@ const ViewAnalyticsByMonth = () => {
           }).catch((err)=>{console.log(err)});
     }
 
-    loadData();
+    loadData(month);
     
     },[]);
     
