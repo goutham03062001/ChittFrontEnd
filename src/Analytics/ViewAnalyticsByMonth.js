@@ -15,7 +15,7 @@ const ViewAnalyticsByMonth = () => {
     const[state,setState] = useState([]);
     const[loaded,setLoaded] = useState(false);
     const {month} = useParams();
-    useEffect((month)=>{
+    useEffect(()=>{
     const loadData = async()=>{
 
         const res = await axios.get(BASE_URL+"/users/analytics/month/"+month+"/viewMore").then((data)=>{
@@ -26,7 +26,7 @@ const ViewAnalyticsByMonth = () => {
           }).catch((err)=>{console.log(err)});
     }
 
-    loadData(month);
+    loadData();
     
     },[month]);
     
@@ -36,7 +36,9 @@ const ViewAnalyticsByMonth = () => {
             <h5 className='my-3 text-center'>You are viewing : {month}th month Chit Details </h5>
 
             <br/><br/><br/>
-           {loaded ? <>
+           {
+            loaded ? <>
+
             <TableContainer  style={{border:"0.7px solid black",overFlowX:"scroll"}}>
                 <Table>
                     <TableHead>
