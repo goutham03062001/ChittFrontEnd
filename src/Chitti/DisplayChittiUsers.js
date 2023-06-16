@@ -273,7 +273,7 @@ const DisplayChittiUsers = () => {
                             handleOpenModal(true);
                           }}
                         >
-                          View User {user.userName}
+                          View  {user.userName} Details
                         </Button>
                       </div>
                     </div>
