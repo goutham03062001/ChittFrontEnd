@@ -28,7 +28,7 @@ const ViewAnalyticsByMonth = () => {
 
     loadData(month);
     
-    },[]);
+    },[month]);
     
   return (
     <div className="container">
