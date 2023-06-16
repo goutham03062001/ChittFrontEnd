@@ -21,10 +21,11 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Empty } from "antd";
-
-import Skeleton from '@mui/material/Skeleton';
+import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
+import Skeleton from "@mui/material/Skeleton";
 
 import CircularProgress from "@mui/material/CircularProgress";
+import {Link} from "react-router-dom";
 // or
 // or
 // import twilio from "twilio";
@@ -151,8 +152,25 @@ const DisplayChittiUsers = () => {
         console.log(error.message);
       });
   };
+
+  async function viewMonthlyCollections() {
+    const res = await axios
+      .get(BASE_URL+"/users/analytics/month/2")
+      .then((data) => {
+        console.log(data);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   const chitsArray = Array.from({ length: 20 }, (_, index) => (
-    <ChitsUI index={index + 1} userId={userId} currentUser={currentUser} closeDetails = {(e)=>handleOpenModal()}/>
+    <ChitsUI
+      index={index + 1}
+      userId={userId}
+      currentUser={currentUser}
+      closeDetails={(e) => handleOpenModal()}
+    />
   ));
   return (
     <div className="container">
@@ -160,12 +178,20 @@ const DisplayChittiUsers = () => {
         className="card-body text text-center"
         style={{
           display: "flex",
-          justifyContent: "space-evenly",
+          justifyContent: "space-between",
           alignItems: "center",
         }}
       >
-        {usersLoaded && <h4>Chitti Users</h4>}
-
+        {usersLoaded && <h5>Chitti Users</h5>}
+        <Link to="/viewAnalytics">
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={viewMonthlyCollections}
+        >
+          <SignalCellularAltIcon />
+        </Button>
+        </Link>
         <Button
           variant="contained"
           color="success"
@@ -173,104 +199,105 @@ const DisplayChittiUsers = () => {
             addNewUser();
           }}
         >
-          Add New User <AddIcon />
+          <AddIcon />
         </Button>
       </div>
-{usersLoaded ? <>
-  <div className="row">
-        {isDltBtnClicked ? (
-          <>
-            <ToastContainer position="top-center" className="mt-5" />
-          </>
-        ) : (
-          <></>
-        )}
-        {users && users.length >= 1 ? (
-          <>
-            {users !== null &&
-              users.map((user) => (
-                <div className="card user-card col-lg-4 col-11  col-sm-12 my-3">
-                  <div className="card-body">
-                    <p>Name : {user.userName}</p>
-                    <p>Mobile : {user.userMobile}</p>
-                    <div className="user-more-icon">
-                      <MoreVertIcon
-                        onClick={() => {
-                          handleMenuActions(user);
-                        }}
-                        className="moreVertIcon"
-                      />
+      {usersLoaded ? (
+        <>
+          <div className="row">
+            {isDltBtnClicked ? (
+              <>
+                <ToastContainer position="top-center" className="mt-5" />
+              </>
+            ) : (
+              <></>
+            )}
+            {users && users.length >= 1 ? (
+              <>
+                {users !== null &&
+                  users.map((user) => (
+                    <div className="card user-card col-lg-4 col-11  col-sm-12 my-3">
+                      <div className="card-body">
+                        <p>Name : {user.userName}</p>
+                        <p>Mobile : {user.userMobile}</p>
+                        <div className="user-more-icon">
+                          <MoreVertIcon
+                            onClick={() => {
+                              handleMenuActions(user);
+                            }}
+                            className="moreVertIcon"
+                          />
 
-                      {showMenuActions && user._id === menuUserId && (
-                        <>
-                          <div className="card menuActionCard">
-                            {/* <CloseIcon/> */}
-                            {/* <p>Update Details <ModeEditOutlineIcon/></p>
+                          {showMenuActions && user._id === menuUserId && (
+                            <>
+                              <div className="card menuActionCard">
+                                {/* <CloseIcon/> */}
+                                {/* <p>Update Details <ModeEditOutlineIcon/></p>
                      <p>Remove Details <DeleteOutlineIcon/></p>
                      <p>Modify <AutoFixHighIcon/></p> */}
-                            <table>
-                              <tr>
-                                <td>Update Details </td>
+                                <table>
+                                  <tr>
+                                    <td>Update Details </td>
 
-                                <td>
-                                  <IconButton>
-                                    <ModeEditOutlineIcon />{" "}
-                                  </IconButton>
-                                </td>
-                              </tr>
+                                    <td>
+                                      <IconButton>
+                                        <ModeEditOutlineIcon />{" "}
+                                      </IconButton>
+                                    </td>
+                                  </tr>
 
-                              <tr>
-                                <td>Remove Details </td>
-                                <td>
-                                  <IconButton>
-                                    <DeleteOutlineIcon
-                                      onClick={() => {
-                                        deleteUserById(user);
-                                      }}
-                                    />
-                                  </IconButton>
-                                </td>
-                              </tr>
+                                  <tr>
+                                    <td>Remove Details </td>
+                                    <td>
+                                      <IconButton>
+                                        <DeleteOutlineIcon
+                                          onClick={() => {
+                                            deleteUserById(user);
+                                          }}
+                                        />
+                                      </IconButton>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </div>
+                            </>
+                          )}
+                        </div>
 
-                              
-                            </table>
-                          </div>
-                        </>
-                      )}
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            setUserName(user.userName);
+
+                            ViewSingleUserDetails(user);
+                            handleOpenModal(true);
+                          }}
+                        >
+                          View User {user.userName}
+                        </Button>
+                      </div>
                     </div>
-
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        setUserName(user.userName);
-
-                        ViewSingleUserDetails(user);
-                        handleOpenModal(true);
-                      }}
-                    >
-                      View User {user.userName}
-                    </Button>
-                  </div>
+                  ))}
+              </>
+            ) : (
+              <>
+                <div className="empty">
+                  <h3 className="text text-center">No Users Found</h3>
+                  <p>Create Users to see them here.</p>
+                  <Empty description={false} />
                 </div>
-              ))}
-          </>
-        ) : (
-          <>
-            <div className="empty">
-              <h3 className="text text-center">No Users Found</h3>
-              <p>Create Users to see them here.</p>
-              <Empty description={false} />
-              
-            </div>
-          </>
-        )}
-      </div>
-</> : <>
-  <h3 className="text text-center">
-    <Skeleton/>
-    <CircularProgress color="primary" size="40"/>
-  </h3>
-</>}
+              </>
+            )}
+          </div>
+        </>
+      ) : (
+        <>
+          <h3 className="text text-center">
+            <Skeleton />
+            <CircularProgress color="primary" size="40" />
+          </h3>
+        </>
+      )}
       {openModal && currentUser ? (
         <>
           <Modal open={openModal} className="userDetails">

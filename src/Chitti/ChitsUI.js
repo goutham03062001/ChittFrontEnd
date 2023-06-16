@@ -31,7 +31,7 @@ const ChitsUI = ({ index, userId, currentUser , closeDetails, openModal}) => {
   const [Status, setStatus] = useState("");
   const [Mode, setMode] = useState("");
   const [Date, setDate] = useState("");
-
+  const[Amount,setAmount] = useState(0);
   //loader
   const month = index;
  
@@ -54,7 +54,7 @@ const ChitsUI = ({ index, userId, currentUser , closeDetails, openModal}) => {
         setStatus(data.data.Status);
         setDate(data.data.Date);
         setMode(data.data.Mode);
-
+        setAmount(data.data.Amount);
       })
       .catch((error) => {
         console.log(error.message);
@@ -97,7 +97,7 @@ const ChitsUI = ({ index, userId, currentUser , closeDetails, openModal}) => {
         </>
       );
     }
-    const body = { month, Mode, Status, Date };
+    const body = { month, Mode, Status, Date, Amount };
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -147,6 +147,16 @@ const ChitsUI = ({ index, userId, currentUser , closeDetails, openModal}) => {
                   setMode(e.target.value);
                 }}
               />
+              <br/>
+              <br/>
+              <TextField
+                label="Amount"
+                value={ Amount}
+                type="number"
+                onChange={(e) => {
+                  setAmount(e.target.value);
+                }}
+              />
               <br />
               <br />
               <TextField
@@ -184,6 +194,13 @@ const ChitsUI = ({ index, userId, currentUser , closeDetails, openModal}) => {
               Mode -{" "}
               {currentUser.otherDetails.map((item) =>
                 item.month === index ? <>{item.Mode}</> : <></>
+              )}
+            </p>
+
+            <p>
+              Amount -{" "}
+              {currentUser.otherDetails.map((item) =>
+                item.month === index ? <>{item && item.Amount}</> : <></>
               )}
             </p>
             <p>
