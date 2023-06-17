@@ -10,11 +10,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Box } from '@mui/material';
-
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 const ViewAnalyticsByMonth = () => {
     const[state,setState] = useState([]);
     const[loaded,setLoaded] = useState(false);
     const {month} = useParams();
+
     useEffect(()=>{
     const loadData = async()=>{
 
@@ -29,7 +31,10 @@ const ViewAnalyticsByMonth = () => {
     loadData();
     
     },[month]);
-    
+    var totalAmount = 0;
+    state.map((item)=>{
+        totalAmount = totalAmount+item.Amount;
+    })
   return (
     <div className="container">
         <div className="row">
@@ -43,11 +48,12 @@ const ViewAnalyticsByMonth = () => {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{minWidth:"150px",fontWeight:"bold"}}>Name</TableCell>
-                            <TableCell sx={{minWidth:"100px" ,fontWeight:"bold"}}>Amount</TableCell>
-                            <TableCell sx={{minWidth:"150px",fontWeight:"bold"}}>Date</TableCell>
-                            <TableCell sx={{minWidth:"150px",fontWeight:"bold"}}>Mode</TableCell>
-                            <TableCell sx={{minWidth:"100px",fontWeight:"bold"}}>S.No</TableCell>
+                            <TableCell sx={{minWidth:"100px",fontWeight:"bold",color:"#993399"}}>S.No</TableCell>
+                            <TableCell sx={{minWidth:"150px",fontWeight:"bold",color:"#993399"}}>Date</TableCell>
+                            <TableCell sx={{minWidth:"150px",fontWeight:"bold",color:"#993399"}}>Name</TableCell>
+                            <TableCell sx={{minWidth:"100px" ,fontWeight:"bold",color:"#993399"}}>Amount</TableCell>
+                            <TableCell sx={{minWidth:"150px",fontWeight:"bold",color:"#993399"}}>Mode</TableCell>
+                            <TableCell sx={{minWidth:"50px",fontWeight:"bold",color:"#993399"}}>More Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -55,14 +61,30 @@ const ViewAnalyticsByMonth = () => {
                             <>
                                 <TableRow
                                 key={item.userName}>
-                                    <TableCell>{item.userName}</TableCell>
-                                    <TableCell> &#8377; {item.Amount}</TableCell>
-                                    <TableCell>{item.Date}</TableCell>
-                                    <TableCell>{item.Mode}</TableCell>
                                     <TableCell>{state.indexOf(item)+1}</TableCell>
+                                    <TableCell style={{color:"brown"}}>{item.Date}</TableCell>
+                                    <TableCell style={{color:"green"}}>{item.userName}</TableCell>
+                                    <TableCell style={{color:"blue"}}> &#8377; {item.Amount}</TableCell>
+                                    <TableCell style={{color:"red"}}>{item.Mode}</TableCell>
+                                    <TableCell style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                                            {/* <EditIcon sx={{color:"green"}}/>
+                                            <DeleteForeverIcon sx={{color:"red"}}/> */}
+                                            <button className="btn btn-sm btn-success">Edit &nbsp; <EditIcon sx={{color:"white",fontSize:"14px"}}/></button>
+                                            <button className="btn btn-sm btn-danger">Remove &nbsp; <DeleteForeverIcon sx={{color:"white",fontSize:"14px"}}/></button>
+                                    </TableCell>
                                 </TableRow>
                             </>
                         ))}
+                    </TableBody>
+                    <TableBody>
+                        <TableRow>
+                            <TableCell sx={{minWidth:"120px"}}>
+                            <h6 style={{color:"blue"}}>Grand Total</h6>
+                            </TableCell>
+                            <TableCell></TableCell>
+                            <TableCell></TableCell>
+                            <TableCell style={{color:"blue"}}> <h6>&#8377;{totalAmount}</h6></TableCell>
+                        </TableRow>
                     </TableBody>
                 </Table>
             </TableContainer>
