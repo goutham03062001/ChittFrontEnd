@@ -9,7 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Box ,Modal,Typography,TextField} from '@mui/material';
+import { Box ,Modal,TextField} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CloseIcon from '@mui/icons-material/Close';
@@ -60,6 +60,7 @@ const ViewAnalyticsByMonth = () => {
     const RemoveThisUserDetails = (userName) =>{
         console.log("You are deleting : "+userName);
         setIsWantToDelete(true);
+        console.log(isWantToDelete);
     }
 
    
