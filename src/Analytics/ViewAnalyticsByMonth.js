@@ -32,9 +32,10 @@ const ViewAnalyticsByMonth = () => {
     
     },[month]);
     var totalAmount = 0;
-    state.map((item)=>{
+    state.forEach((item)=>{
         totalAmount = totalAmount+item.Amount;
     })
+    
   return (
     <div className="container">
         <div className="row">
