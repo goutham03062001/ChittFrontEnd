@@ -6,6 +6,7 @@ import {
   Typography,
   Alert,
   IconButton,
+  Box
 } from "@mui/material";
 import "./ViewSingleUserDetails.css";
 import AddIcon from "@mui/icons-material/Add";
@@ -38,6 +39,8 @@ const DisplayChittiUsers = () => {
   const [currentUser, setCurrentUser] = useState(null);
   //userAddedMessage
   const [successMessae, setSuccessMessage] = useState(null);
+  const[isEditingName,setIsEditingName] = useState(false);
+  const[editName,setEditName] = useState("");
   useEffect(() => {
     function loadUsers() {
       // setUsersLoaded()
@@ -172,9 +175,20 @@ const DisplayChittiUsers = () => {
       closeDetails={(e) => handleOpenModal()}
     />
   ));
+    const[editingUserName,setEditingUserName] = useState("");
+  const EditThisUserDetails = (user)=>{
+    console.log('You want to edit : '+user.userName);
+    setEditingUserName(user.userName);
+    setEditName(user.userName);
+    setIsEditingName(true);
+    setShowMenuActions(false);
+  }
   return (
     <div className="container">
-      <div
+      
+      {usersLoaded ? (
+        <>
+        <div
         className="card-body text text-center"
         style={{
           display: "flex",
@@ -202,8 +216,6 @@ const DisplayChittiUsers = () => {
           <AddIcon />
         </Button>
       </div>
-      {usersLoaded ? (
-        <>
           <div className="row">
             {isDltBtnClicked ? (
               <>
@@ -218,7 +230,16 @@ const DisplayChittiUsers = () => {
                   users.map((user) => (
                     <div className="card user-card col-lg-4 col-11  col-sm-12 my-3">
                       <div className="card-body">
+                        {isEditingName && editingUserName===user.userName ? <>
+                        <p>Editing User Name</p>
+                          <TextField
+                            placeholder="Enter your name"
+                            value = {editName}
+                            onChange = {(e)=>{setEditName(e.target.value)}}
+                          />
+                        </> :<>
                         <p>Name : {user.userName}</p>
+                        </>}
                         <p>Mobile : {user.userMobile}</p>
                         <div className="user-more-icon">
                           <MoreVertIcon
@@ -241,7 +262,9 @@ const DisplayChittiUsers = () => {
 
                                     <td>
                                       <IconButton>
-                                        <ModeEditOutlineIcon />{" "}
+                                        <ModeEditOutlineIcon 
+                                          onClick={(e)=>{EditThisUserDetails(user)}}
+                                        />{" "}
                                       </IconButton>
                                     </td>
                                   </tr>
@@ -266,6 +289,7 @@ const DisplayChittiUsers = () => {
 
                         <Button
                           variant="contained"
+                          color={isEditingName && editingUserName === user.userName? "success" : "primary"}
                           onClick={() => {
                             setUserName(user.userName);
 
@@ -273,7 +297,7 @@ const DisplayChittiUsers = () => {
                             handleOpenModal(true);
                           }}
                         >
-                          View  {user.userName} Details
+                          {isEditingName && editingUserName===user.userName ? `Update Details` : `View ${user.userName} Details` }
                         </Button>
                       </div>
                     </div>
@@ -292,10 +316,12 @@ const DisplayChittiUsers = () => {
         </>
       ) : (
         <>
-          <h3 className="text text-center">
-            <Skeleton />
-            <CircularProgress color="primary" size="40" />
-          </h3>
+          
+        <Box sx={{ display: 'flex' , flexDirection:"column", width:'100vw',height:'100vh',justifyContent:'center',alignItems: 'center'}}>
+      <CircularProgress />
+      <br/><br/>
+        <p>Loading .... Please Wait.</p>
+    </Box>
         </>
       )}
       {openModal && currentUser ? (

@@ -57,10 +57,14 @@ const ViewAnalyticsByMonth = () => {
             console.log(res);
         }).catch((err)=>{console.log(err)})
     }
-    const RemoveThisUserDetails = (userName) =>{
+    const RemoveThisUserDetails = async(userName) =>{
         console.log("You are deleting : "+userName);
         setIsWantToDelete(true);
         console.log(isWantToDelete);
+        const response = await axios.delete(BASE_URL+"/users/getUserName/"+userName+"/month/"+month).then((data)=>{
+            console.log(data);
+            console.log(response);
+        }).catch((err)=>{console.log(err)});
     }
 
    
@@ -68,11 +72,11 @@ const ViewAnalyticsByMonth = () => {
   return (
     <div className="container">
         <div className="row">
-            <h5 className='my-3 text-center'>You are viewing : {month}th month Chit Details </h5>
+            <p className='text text-primary text-center my-3 h5'>You are viewing : {month}{parseInt(month)===1 ? "st" : parseInt(month)===2?"nd" : parseInt(month)===3 ? "rd" : "th"} month Chit Details </p>
 
             <br/><br/><br/>
            {
-            loaded ? <>
+            loaded && state.length>0? <>
 
             <TableContainer  style={{border:"0.7px solid black",overFlowX:"scroll"}}>
                 <Table>
@@ -100,7 +104,7 @@ const ViewAnalyticsByMonth = () => {
                                             {/* <EditIcon sx={{color:"green"}}/>
                                             <DeleteForeverIcon sx={{color:"red"}}/> */}
                                             <button className="btn btn-sm btn-success" onClick={(e)=>{EditThisUserDetails(item.userName)}}>Edit &nbsp; <EditIcon sx={{color:"white",fontSize:"14px"}}/></button>
-                                            <button className="btn btn-sm btn-danger" onClick={(e)=>{RemoveThisUserDetails(item.userName)}}>Remove &nbsp; <DeleteForeverIcon sx={{color:"white",fontSize:"14px"}}/></button>
+                                            <button className="btn btn-sm btn-danger" onClick={(e)=>{RemoveThisUserDetails(item.userName,item.month)}}>Remove &nbsp; <DeleteForeverIcon sx={{color:"white",fontSize:"14px"}}/></button>
                                     </TableCell>
                                 </TableRow>
                             </>
@@ -119,11 +123,16 @@ const ViewAnalyticsByMonth = () => {
                 </Table>
             </TableContainer>
            </> : <>
-           <Box sx={{ display: 'flex' , flexDirection:"column", width:'100%',height:'100%',justifyContent:'center',alignItems: 'center'}}>
+          {state.length===0 && loaded? <p className="text text-center text-info" style={{width:'100%',height:'50vh',display:"flex",justifyContent:"center",alignItems:"center"}}>No Entries Available Now.</p>: <>
+         {!loaded ? <>
+            <Box sx={{ display: 'flex' , flexDirection:"column", width:'100%',height:'100%',justifyContent:'center',alignItems: 'center'}}>
       <CircularProgress />
       <br/><br/>
         <p>Loading .... Please Wait.</p>
     </Box>
+         </> : <></>}
+          </>}
+          
            </>}
 
 
