@@ -11,7 +11,6 @@ const Analytics = () => {
 
   const[response,setResponse] = useState([]);
   const[isLoaded,setIsLoaded] = useState(false);
-  const[entriesObj,setEntriesObj] = useState({});
   // var responseArr = [];
   useEffect(()=>{
     const loadAnalytics = async() =>{

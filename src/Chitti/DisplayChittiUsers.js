@@ -23,7 +23,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Empty } from "antd";
 import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
-import Skeleton from "@mui/material/Skeleton";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import {Link} from "react-router-dom";
