@@ -9,12 +9,21 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Box } from '@mui/material';
+import { Box ,Modal,Typography,TextField} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import CloseIcon from '@mui/icons-material/Close';
 const ViewAnalyticsByMonth = () => {
     const[state,setState] = useState([]);
     const[loaded,setLoaded] = useState(false);
+    const[editingLoaded,setEditingLoaded] = useState(false);
+    const[editUserDetails,setEditUserDetails] = useState({});
+    const[userName,setUserName] = useState();
+    const[userAmount,setUserAmount] = useState();
+    const[userMode,setUserMode] = useState();
+    const[userDate,setUserDate] = useState();
+
+    const[isWantToDelete,setIsWantToDelete] = useState(false);
     const {month} = useParams();
 
     useEffect(()=>{
@@ -35,7 +44,26 @@ const ViewAnalyticsByMonth = () => {
     state.forEach((item)=>{
         totalAmount = totalAmount+item.Amount;
     })
-    
+    const EditThisUserDetails = async (userName) =>{
+        console.log("You are editing : "+userName);
+        const res = await axios.get(BASE_URL+'/users/getuserName/'+userName+"/monthId/"+month).then((data)=>{
+            console.log(data.data);
+            setEditingLoaded(true); 
+            setEditUserDetails(data.data);
+            setUserName(data.data.userName);
+            setUserAmount(data.data.Amount);
+            setUserDate(data.data.Date);
+            setUserMode(data.data.Mode);
+            console.log(res);
+        }).catch((err)=>{console.log(err)})
+    }
+    const RemoveThisUserDetails = (userName) =>{
+        console.log("You are deleting : "+userName);
+        setIsWantToDelete(true);
+    }
+
+   
+
   return (
     <div className="container">
         <div className="row">
@@ -70,8 +98,8 @@ const ViewAnalyticsByMonth = () => {
                                     <TableCell style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                                             {/* <EditIcon sx={{color:"green"}}/>
                                             <DeleteForeverIcon sx={{color:"red"}}/> */}
-                                            <button className="btn btn-sm btn-success">Edit &nbsp; <EditIcon sx={{color:"white",fontSize:"14px"}}/></button>
-                                            <button className="btn btn-sm btn-danger">Remove &nbsp; <DeleteForeverIcon sx={{color:"white",fontSize:"14px"}}/></button>
+                                            <button className="btn btn-sm btn-success" onClick={(e)=>{EditThisUserDetails(item.userName)}}>Edit &nbsp; <EditIcon sx={{color:"white",fontSize:"14px"}}/></button>
+                                            <button className="btn btn-sm btn-danger" onClick={(e)=>{RemoveThisUserDetails(item.userName)}}>Remove &nbsp; <DeleteForeverIcon sx={{color:"white",fontSize:"14px"}}/></button>
                                     </TableCell>
                                 </TableRow>
                             </>
@@ -96,6 +124,74 @@ const ViewAnalyticsByMonth = () => {
         <p>Loading .... Please Wait.</p>
     </Box>
            </>}
+
+
+           {editingLoaded && editUserDetails? <>
+            <Modal
+            open={editingLoaded}
+            aria-labelledby="modal-modal-title"
+            style={{width:"100vw",height:"100vh",display:"flex",justifyContent:"center",alignItems:"center"}}
+  aria-describedby="modal-modal-description">
+                <Box 
+                style={{
+                    width:"90%",
+                    height:"70%",
+                    backgroundColor:"white",
+                    position:"relative",
+                    borderRadius:"10px"}}
+                >
+                    <div className="p-3">
+                        
+                        <button 
+                        className="btn btn-md"
+                        style={{position:"absolute",top:"10px",right:"10px"}}
+                        onClick = {()=>{return setEditingLoaded(false)}}
+                        >Close &nbsp; <CloseIcon sx={{fontSize:"18px"}}/></button>
+
+                        <div className="my-5 d-flex flex-column justify-content-around align-center">
+                        
+                        <label>Name </label>
+                        <TextField
+                            placeholder='Enter user name here'
+                            value={userName}
+                            onChange = {(e)=>{setUserName(e.target.value)}}
+                        />
+                        <br/>
+                        <label>Amount </label>
+                        <TextField
+                            placeholder='Amount'
+                            className="my-1"
+                            value={userAmount}
+                            onChange = {(e)=>{setUserAmount(e.target.value)}}
+
+                        />
+                        <br/>
+
+                        <label>Date </label>
+                        <TextField
+                            placeholder='Date'
+                            className="my-1"
+                            type="Date"
+                            value={userDate}
+                            onChange = {(e)=>{setUserDate(e.target.value)}}
+
+                        />
+                        <br/>
+
+                        <label>Mode </label>
+                        <TextField
+                            placeholder='Mode'
+                            className="my-1"    
+                            value={userMode}
+                            onChange = {(e)=>{setUserMode(e.target.value)}}
+
+                        />
+                        <button className="btn btn-md btn-warning mt-3">Update Details</button>
+                        </div>
+                    </div>
+                </Box>
+            </Modal>
+           </> :<></>}
         </div>
     </div>
   )
